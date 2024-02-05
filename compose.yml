@@ -1,0 +1,15 @@
+services:
+  next-app:
+    container_name: exam-yumemi-next-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: exam-yumemi
+    volumes:
+      - ./next-app/:/app/
+    ports:
+      - 3000:3000
+    environment:
+      - WATCHPACK_POLLING=true
+    tty: true
+    stdin_open: true
