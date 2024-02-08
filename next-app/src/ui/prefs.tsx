@@ -18,6 +18,7 @@ export default function Prefs({
             <Checkbox
               isChecked={prefDetail.isSelected}
               id={`pref-${prefDetail.prefCode}`}
+              onChange={(e) => handlePrefSelected(prefDetail.prefCode, e.target.checked)}
             >
               {prefDetail.prefName}
             </Checkbox>

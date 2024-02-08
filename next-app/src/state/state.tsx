@@ -26,4 +26,28 @@ export default function usePrefectureState(): [
     }
     fetch();
   }, []);
+
+  async function handlePrefSelected(prefCode: number, isSelected: boolean) {
+    const targetIndex = prefPopuState.findIndex((_) => _.prefCode === prefCode);
+    if (targetIndex < 0) return;
+    const targetPrefDetail = prefPopuState[targetIndex];
+    console.log(`${targetPrefDetail?.prefName} turns to ${isSelected ? 'checked' : 'unchecked'}`);
+
+    const needToFetch = isSelected && targetPrefDetail?.populationArr.length === 0;
+    const newPopulationArr = needToFetch
+      ? await fetchPopulationPerYearByPrefectue(prefCode)
+      : targetPrefDetail?.populationArr;
+
+    const newValue = [...prefPopuState];
+    newValue[targetIndex] = {
+      prefCode: targetPrefDetail.prefCode,
+      prefName: targetPrefDetail.prefName,
+      isSelected: isSelected,
+      populationArr: newPopulationArr,
+    };
+
+    setPrefPopuState(newValue);
+  }
+
+  return [prefPopuState, handlePrefSelected];
 }
